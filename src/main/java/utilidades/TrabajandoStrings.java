@@ -2,7 +2,6 @@ package utilidades;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.regex.Regex;
 
 public class TrabajandoStrings {
 

@@ -3,7 +3,6 @@ package utilidades;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
-import com.workit.crawl.parsing.api.jsoup.JSoupAttributes;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -11,12 +10,12 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.Iterator;
 
-import static com.workit.crawl.parsing.api.jsoup.JSoupElements.toElements;
 import static java.lang.Integer.parseInt;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.isDigits;
 
 public final class JsonNodeUtils {
+    /*
     private final static String SCRIPT_SELECTOR = "script";
     private static final String SCRIPT_KEY = "offers";
 
@@ -120,5 +119,5 @@ public final class JsonNodeUtils {
         return child != null ?
                 child.asText() :
                 null;
-    }
+    }*/
 }
