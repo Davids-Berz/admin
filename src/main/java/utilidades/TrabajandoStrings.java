@@ -14,7 +14,7 @@ public class TrabajandoStrings {
         3.- tomar el valor «sinopsis», (sin caracteres)y guardarlo en una variable
         * */
         String frase = "Una sinopsis es un resumen general de una obra en particular.\u200B El término «sinopsis» procede del latín «synopsis», cuyos orígenes se remontan al griego antiguo y que etimológicamente significa visión de conjunto, \u200B de las raíces griegas συν y οψις.";
-        String priceRaw = "349:-";
+        String priceRaw = "349";
 
         String subString = StringUtils.substringAfter(frase, ".");
         String price = StringUtils.replaceAll(priceRaw, "\\D", "").trim();
