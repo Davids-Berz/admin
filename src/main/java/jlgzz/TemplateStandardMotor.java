@@ -824,7 +824,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
     * Locale.US : e.g : 123,456 / 345,987.246
     */
    private Float parseFloat(final String raw) {
-      final String textNumber = CharMatcher.JAVA_DIGIT.or(CharMatcher.anyOf(".,")).retainFrom(raw);
+      final String textNumber = CharMatcher.javaDigit().or(CharMatcher.anyOf(".,")).retainFrom(raw);
       if (isNotBlank(textNumber)) {
          try {
             NumberFormat format = NumberFormat.getNumberInstance(CURRENT_LOCALE);

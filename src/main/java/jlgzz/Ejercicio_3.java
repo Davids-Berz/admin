@@ -7,7 +7,8 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-public class Ejercicio_3 {
+public class
+Ejercicio_3 {
 
     public static void main(String[] args) {
 
