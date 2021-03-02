@@ -25,6 +25,7 @@ public class CrossSellSwogo {
         }
 
         System.out.println("parameters: " + parameters);
+//        {"client":"fnacEs","skus":["1-7538577"],"type":"bundles","matching":"pdp","assistant":"pdp"}
 
         Document document = null;
         try {
