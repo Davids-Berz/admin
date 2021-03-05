@@ -1,12 +1,6 @@
 package utilidades;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
-import java.util.Locale;
 
 public class TrabajandoStrings {
 
