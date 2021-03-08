@@ -16,16 +16,17 @@ public class CrossSellSwogo {
 
     public static void main(String[] args) {
 
-        String crossSellUrl = "http://api.swogo.net/JTdCJTIyY2xpZW50JTIyJTNBJTIyZm5hY0VzJTIyJTJDJTIyc2t1cyUyMiUzQSU1QiUyMjEtNzUzODU3NyUyMiU1RCUyQyUyMnR5cGUlMjIlM0ElMjJidW5kbGVzJTIyJTJDJTIybWF0Y2hpbmclMjIlM0ElMjJwZHAlMjIlMkMlMjJhc3Npc3RhbnQlMjIlM0ElMjJwZHAlMjIlN0Q=";
+        String crossSellUrl = "https://api.swogo.net/JTdCJTIyY2xpZW50JTIyJTNBJTIyZm5hY0VzJTIyJTJDJTIyc2t1cyUyMiUzQSU1QiUyMjEtMTQ4MzM5NyUyMiU1RCUyQyUyMnR5cGUlMjIlM0ElMjJidW5kbGVzJTIyJTJDJTIybWF0Y2hpbmclMjIlM0ElMjJwZHAlMjIlMkMlMjJhc3Npc3RhbnQlMjIlM0ElMjJwZHAlMjIlMkMlMjJjb25maWd1cmF0aW9uJTIyJTNBJTIyJTdCJTVDJTIybG9uZ1N0eWxlJTVDJTIyJTNBdHJ1ZSU3RCUyMiU3RA==";
         String parameters = null;
         try {
-            parameters = URLDecoder.decode("%7B%22client%22%3A%22fnacEs%22%2C%22skus%22%3A%5B%221-7538577%22%5D%2C%22type%22%3A%22bundles%22%2C%22matching%22%3A%22pdp%22%2C%22assistant%22%3A%22pdp%22%7D", StandardCharsets.UTF_8.displayName());
+            parameters = URLDecoder.decode("%7B%22client%22%3A%22fnacEs%22%2C%22skus%22%3A%5B%221-1483397%22%5D%2C%22type%22%3A%22bundles%22%2C%22matching%22%3A%22pdp%22%2C%22assistant%22%3A%22pdp%22%2C%22configuration%22%3A%22%7B%5C%22longStyle%5C%22%3Atrue%7D%22%7D", StandardCharsets.UTF_8.displayName());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         System.out.println("parameters: " + parameters);
 //        {"client":"fnacEs","skus":["1-7538577"],"type":"bundles","matching":"pdp","assistant":"pdp"}
+//        {"client":"fnacEs","skus":["1-1483397"],"type":"bundles","matching":"pdp","assistant":"pdp","configuration":"{\"longStyle\":true}"} Impresora HP LaserJet Pro M15w Blanco
 
         Document document = null;
         try {
