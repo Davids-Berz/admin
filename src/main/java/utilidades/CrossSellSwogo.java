@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -16,17 +17,15 @@ public class CrossSellSwogo {
 
     public static void main(String[] args) {
 
-        String crossSellUrl = "https://api.swogo.net/JTdCJTIyY2xpZW50JTIyJTNBJTIyZm5hY0VzJTIyJTJDJTIyc2t1cyUyMiUzQSU1QiUyMjEtMTQ4MzM5NyUyMiU1RCUyQyUyMnR5cGUlMjIlM0ElMjJidW5kbGVzJTIyJTJDJTIybWF0Y2hpbmclMjIlM0ElMjJwZHAlMjIlMkMlMjJhc3Npc3RhbnQlMjIlM0ElMjJwZHAlMjIlMkMlMjJjb25maWd1cmF0aW9uJTIyJTNBJTIyJTdCJTVDJTIybG9uZ1N0eWxlJTVDJTIyJTNBdHJ1ZSU3RCUyMiU3RA==";
-        String parameters = null;
-        try {
-            parameters = URLDecoder.decode("%7B%22client%22%3A%22fnacEs%22%2C%22skus%22%3A%5B%221-1483397%22%5D%2C%22type%22%3A%22bundles%22%2C%22matching%22%3A%22pdp%22%2C%22assistant%22%3A%22pdp%22%2C%22configuration%22%3A%22%7B%5C%22longStyle%5C%22%3Atrue%7D%22%7D", StandardCharsets.UTF_8.displayName());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String target = "https://www.fnac.es/Impresora-multifuncion-HP-DeskJet-2722-Blanco-Impresora-Impresora-multifuncion-inyeccion/a7538577?oltype=1&OrderId=2&page=1&SortId=2#INOVTEL";
 
-        System.out.println("parameters: " + parameters);
-//        {"client":"fnacEs","skus":["1-7538577"],"type":"bundles","matching":"pdp","assistant":"pdp"}
-//        {"client":"fnacEs","skus":["1-1483397"],"type":"bundles","matching":"pdp","assistant":"pdp","configuration":"{\"longStyle\":true}"} Impresora HP LaserJet Pro M15w Blanco
+        String crossSellUrl = "https://api.swogo.net/JTdCJTIyY2xpZW50JTIyJTNBJTIyZm5hY0VzJTIyJTJDJTIyc2t1cyUyMiUzQSU1QiUyMjEtNzUzODU3NyUyMiU1RCUyQyUyMnR5cGUlMjIlM0ElMjJidW5kbGVzJTIyJTJDJTIybWF0Y2hpbmclMjIlM0ElMjJwZHAlMjIlMkMlMjJhc3Npc3RhbnQlMjIlM0ElMjJwZHAlMjIlMkMlMjJjb25maWd1cmF0aW9uJTIyJTNBJTIyJTdCJTVDJTIybG9uZ1N0eWxlJTVDJTIyJTNBdHJ1ZSU3RCUyMiU3RA==";
+        String path = StringUtils.substringAfterLast(crossSellUrl, "/");
+
+        String pathsDecode = decodeContent(path);
+        System.out.println("parameters: " + pathsDecode);
+
+        String pathEncode = encodeValue(pathsDecode);
 
         Document document = null;
         try {
@@ -40,6 +39,21 @@ public class CrossSellSwogo {
         node = getJson(node, jsonText);
 
         System.out.println("node = " + node);
+    }
+
+    private static String decodeContent(String path) {
+        String jsonContent = new String(Base64.decodeBase64(path.getBytes()));
+        String json = null;
+        try {
+            json = URLDecoder.decode(jsonContent, StandardCharsets.UTF_8.displayName());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    private static String encodeValue(String value) {
+        return Base64.encodeBase64String(value.getBytes());
     }
 
     private static String decodeContent(Document document) {
