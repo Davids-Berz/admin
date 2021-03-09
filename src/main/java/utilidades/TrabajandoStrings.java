@@ -1,11 +1,19 @@
 package utilidades;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
+import java.time.Period;
 
 public class TrabajandoStrings {
 
     public static void main(String[] args) {
 
+        String deliveryRaw = "de 2 a 5 dias";
+
+        String delivery = StringUtils.replaceAll(deliveryRaw, "\\D", "").substring(1);
+        Period period = Period.ofDays(Integer.parseInt(delivery));
+        System.out.println("delivery = " + period);
 
         /*
         1.- tomas un substring hasta el primer punto
