@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class Ejercicio5 {
+public class Ejercicio_5 {
     public static void main(String[] args) {
 
         String target = "https://www.petlove.com.br/mini-adulto-cao-adulto-pequeno-porte-royal-canin/p?sku=3105614-1";

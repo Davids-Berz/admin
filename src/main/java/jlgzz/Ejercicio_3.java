@@ -29,7 +29,7 @@ Ejercicio_3 {
         String sku = document.select(".description span:contains(sku)").attr("data-sku");
 
         String mpn = document.select(".description").text();
-        mpn = StringUtils.substringBetween(mpn, "Modelo: ", " Envío");
+        //mpn = StringUtils.substringBetween(mpn, "Modelo: ", " Envío");
 
         String priceRaw = document.select("[data-description=price] .price-new").text();
         priceRaw = StringUtils.replaceAll(priceRaw,"\\D", "");
@@ -49,8 +49,8 @@ Ejercicio_3 {
         String brand = document.select("tbody tr:contains(marca) td.value").text();
 
         String delivery_timeRaw = document.select(".description").text();
-        delivery_timeRaw = StringUtils.substringBetween(delivery_timeRaw, "Envío en: ", " Horas");
-        Integer deliveryTime = Integer.parseInt(delivery_timeRaw) / 24;
+        //delivery_timeRaw = StringUtils.substringBetween(delivery_timeRaw, "Envío en: ", " Horas");
+        //Integer deliveryTime = Integer.parseInt(delivery_timeRaw) / 24;
 
 
         System.out.println("title = " + title);
@@ -62,6 +62,6 @@ Ejercicio_3 {
         System.out.println("availabilityRaw = " + availability);
         System.out.println("brand = " + brand);
         System.out.println("delivery_timeRaw = " + delivery_timeRaw);
-        System.out.println("deliveryTime = " + deliveryTime);
+        //System.out.println("deliveryTime = " + deliveryTime);
     }
 }
