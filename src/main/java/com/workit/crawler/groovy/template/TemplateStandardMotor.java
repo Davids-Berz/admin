@@ -234,7 +234,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private Elements getOffers(final Document listingPageDocument) {
-      Elements offersElements = listingPageDocument.select("Offers selector ..."); // TODO
+      Elements offersElements = listingPageDocument.select(""); // TODO
       debug("Offers on this page", offersElements.size());
       return offersElements;
    }
@@ -669,7 +669,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private String getRawDelivery(final Element element, final String url) {
-      Element deliveryElement = findElement(element, "Raw delivery selector ...");// TODO
+      Element deliveryElement = findElement(element, "p:nth-of-type(1) strong");// TODO
       String rawDelivery = fromElementText(deliveryElement);
       return validateField(rawDelivery, url, "Raw delivery", IEngineLogger.WARN);
    }
@@ -773,7 +773,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private String getAvailabilityText(final Element element, final String url) {
-      final Element availabilityElement = findElement(element, "Availability text selector ...");// TODO
+      final Element availabilityElement = findElement(element, "#addToCartButton:contains(Agregar al Carrito)"); // TODO
       String availabilityText = fromElementText(availabilityElement);
       return validateField(availabilityText, url, "Availability text", IEngineLogger.ERROR);
    }
@@ -838,13 +838,13 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private String getImagePath(final Element element, final String url) {
-      final Element imageElement = findElement(element, "Image path selector ...");// TODO
-      String imagePath = fromAbsoluteUrl(imageElement, "src");
+      final Element imageElement = findElement(element, "[property=og:image]");// TODO
+      String imagePath = fromAbsoluteUrl(imageElement, "content");
       return validateField(imagePath, url, "Image path", IEngineLogger.WARN);
    }
 
    private String getProductPath(final Element element, final String url) {
-      final Element pathElement = findElement(element, "Product path selector ...");// TODO
+      final Element pathElement = findElement(element, "[rel=canonical]");// TODO
       String productPath = fromAbsoluteUrl(pathElement, "href");
       return validateField(productPath, url, "Product path");
    }
