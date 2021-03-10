@@ -43,10 +43,22 @@ public class CostcoTest {
             e.printStackTrace();
         }
 
-        String currentPage = node.at("/productCategorySearchPage/pagination/currentPage").asText();
-        System.out.println("currentPage: " + currentPage);
+        // productos desde un jsonNode
 
-        System.out.println("node = " + node);
+        JsonNode products = node.at("/productCategorySearchPage/products");
+
+        System.out.println("ofertas: " + products.size());
+
+        for(JsonNode product: products){
+            String url = product.at("/url").asText();
+            String title = product.at("/name").asText();
+            String price = product.at("/price/value").asText();
+
+            System.out.println("url = " + url);
+            System.out.println("title = " + title);
+            System.out.println("price = " + price);
+        }
+
 
     }
 }
