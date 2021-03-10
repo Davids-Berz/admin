@@ -204,7 +204,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
       String REQUEST_URL = "https://www.costco.com.mx/rest/v2/mexico/products/search?fields=FULL&query=&pageSize=24&category=/category/";
 
-      String category = StringUtils.substringAfterLast(segment.getUrl(), "/"); // cos_1.1
+      String category = StringUtils.substringAfterLast(segment.getUrl(), "/");
       String buildUrl = StringUtils.replace(REQUEST_URL, "/category/", category);
       buildUrl = StringUtils.join(buildUrl, "&currentPage=", 0);
       PageRequest request = get(buildUrl);
@@ -223,6 +223,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
             // JSON
 
             Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
+            conn.debug("::listingPageDocument:: " + listingPageDocument.toString().replace("<","#"));
             handleListingPage(listingPageDocument, request.getUrl(), loop);
 
             request = getNextRequest(listingPageDocument, request);
