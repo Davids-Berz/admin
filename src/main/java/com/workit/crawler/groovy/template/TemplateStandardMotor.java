@@ -206,7 +206,6 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
       String category = StringUtils.substringAfterLast(segment.getUrl(), "/");
       String buildUrl = StringUtils.replace(REQUEST_URL, "/category/", category);
-      buildUrl = StringUtils.join(buildUrl, "&currentPage=", 0);
       PageRequest request = get(buildUrl);
       try {
          int loop = 0;
@@ -1117,8 +1116,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
    private HttpGet createHttpGet(HttpParams params, PageRequest request) {
       HttpGet httpGet = new HttpGet(request.getUrl());
-      httpGet.addHeader("authority","www.costco.com.mx");
-      httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+      httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
       httpGet.addHeader("accept-encoding", "gzip, deflate, br");
       httpGet.addHeader("Accept-Language", "es-MX,es-419;q=0.9,es;q=0.8"); // TODO
       httpGet.addHeader("Connection", "keep-alive");
