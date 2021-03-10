@@ -17,6 +17,7 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
@@ -200,7 +201,13 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private void paginateThroughSegments() {
-      PageRequest request = get(segment.getUrl());
+
+      String REQUEST_URL = "https://www.costco.com.mx/rest/v2/mexico/products/search?fields=FULL&query=&pageSize=24&category=/category/";
+
+      String category = StringUtils.substringAfterLast(segment.getUrl(), "/"); // cos_1.1
+      String buildUrl = StringUtils.replace(REQUEST_URL, "/category/", category);
+      buildUrl = StringUtils.join(buildUrl, "&currentPage=", 0);
+      PageRequest request = get(buildUrl);
       try {
          int loop = 0;
          boolean continueCrawl = true;
@@ -210,6 +217,10 @@ public class TemplateStandardMotor extends SiteEnginePass {
             checkNotNull(listingPage, "No listing page returned");
             conn.debug(":: status listing page ::" + listingPage.statusCode);
             request.withCookie(listingPage.getSetCookie());
+
+            // XML
+
+            // JSON
 
             Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
             handleListingPage(listingPageDocument, request.getUrl(), loop);
