@@ -1,5 +1,7 @@
 package com.workit.crawler.groovy.template;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -49,6 +51,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.PeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.json.XML;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -216,14 +219,23 @@ public class TemplateStandardMotor extends SiteEnginePass {
             checkNotNull(listingPage, "No listing page returned");
             conn.debug(":: status listing page ::" + listingPage.statusCode);
             request.withCookie(listingPage.getSetCookie());
-
-            // XML
-
-            // JSON
-
             Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
-            conn.debug("::listingPageDocument:: " + listingPageDocument.toString().replace("<","#"));
-            handleListingPage(listingPageDocument, request.getUrl(), loop);
+
+            // 1-Doc-xmlText
+            String xmlText = listingPageDocument.toString();
+            // 2-xmlText-JsonText
+            String json = XML.toJSONObject(xmlText).toString();
+
+            //3-jsonText-JsonNode
+            JsonNode node = null;
+            try {
+               node = new ObjectMapper().readTree(json);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
+
+            conn.debug("::jsonNode:: " + node.toString().replace("<","#"));
+            handleListingPage(listingPageDocument, request.getUrl(), loop, node);
 
             request = getNextRequest(listingPageDocument, request);
             debug("Page", loop);
@@ -257,15 +269,17 @@ public class TemplateStandardMotor extends SiteEnginePass {
       }
    }
 
-   private void handleListingPage(final Document listingPageDocument, final String url, final int loop) throws Exception {
-      Elements offersElements = getOffers(listingPageDocument);
+   private void handleListingPage(final Document listingPageDocument, final String url, final int loop,JsonNode node) throws Exception {
+//      Elements offersElements = getOffers(listingPageDocument);
+      JsonNode offersNode = node.at("/productCategorySearchPage/products");
       int validOfferIndex = 0;
       int offerIndex = 0;
-      for (Element offerElement : offersElements) {
+      for (JsonNode offerNode: offersNode) {
          offerIndex++;
          showOffer("Page :: " + loop + " - Crawl Offer :: " + offerIndex);
+         String offerUrl = offerNode.at("/url").asText();
 
-         SiteProduct siteProduct = extractOfferInformation(offerElement, url);
+         SiteProduct siteProduct = extractOfferInformation(offerNode, url);
          if (siteProduct != null) {
             if (isDuplicatedPage(siteProduct.getTitle(), siteProduct.getProductPath(), validOfferIndex)) {
                conn.error("Duplicate page found ==> Crawl stopped");
@@ -315,15 +329,15 @@ public class TemplateStandardMotor extends SiteEnginePass {
       else conn.warn("Product skipped");
    }
 
-   private SiteProduct extractOfferInformation(final Element offerElement, final String url) {
+   private SiteProduct extractOfferInformation(final JsonNode offerNode, final String url) {
       try {
          SiteProduct siteProduct = new SiteProduct();
 
-         String title = getTitle(offerElement, url);
+         String title = offerNode.at("/name").asText();
          debug("Title", title);
          siteProduct.setTitle(title);
 
-         String productPath = getProductPath(offerElement, url);
+         String productPath = offerNode.at("/url").asText();
          debug("Product path", productPath);
          siteProduct.setProductPath(productPath);
 
@@ -728,15 +742,15 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
          /**
           * TODO : FILTRE A PERSONNALISER SELON LE SITE
-          * 
+          *
           * Ces tests ne sont pas systematiques. Il faut d'abord s'assurer de l'intEgritE
-          * 
+          *
           * de la valeur du MPN trouvE dans le site :
-          * 
+          *
           * (recherche de la rEfErence via google,
-          * 
+          *
           * verfication si certaines valeurs contiennent trop d'espaces, etc.)
-          * 
+          *
           * Selon le cas, certains voire tous les filtres ci-dessous peuvent Etre omis du code.
           *
           */
@@ -830,9 +844,9 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
    /**
     * Locale.FRENCH : e.g : 123 456 / 345 987,246
-    * 
+    *
     * Locale.GERMANY : e.g : 123.456 / 345.987,246
-    * 
+    *
     * Locale.US : e.g : 123,456 / 345,987.246
     */
    private Float parseFloat(final String raw) {
