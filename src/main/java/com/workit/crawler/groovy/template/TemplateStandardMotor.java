@@ -156,7 +156,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
       PropertyService propertyService = SpringApplicationContext.getBean(PropertyService.class);
 
       proxy = propertyService.getPropertyValue(PROXY_CONFIGURATION, DEFAULT_STANDARD_PROXY);
-      proxyPort = Integer.valueOf(propertyService.getPropertyValue(PROXY_PORT_CONFIGURATION, DEFAULT_STANDARD_PROXY_PORT));
+      proxyPort = 6666;
 
       httpClient = createClient();
 
