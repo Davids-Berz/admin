@@ -1,7 +1,5 @@
 package com.workit.crawler.groovy.template;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -51,7 +49,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.PeriodFormat;
 import org.joda.time.format.PeriodFormatter;
-import org.json.XML;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -217,25 +214,11 @@ public class TemplateStandardMotor extends SiteEnginePass {
             loop++;
             PageResponse listingPage = connection(request, "listing page");
             checkNotNull(listingPage, "No listing page returned");
-            conn.debug(":: status listing page ::" + listingPage.statusCode);
             request.withCookie(listingPage.getSetCookie());
             Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
 
-            // 1-Doc-xmlText
-            String xmlText = listingPageDocument.toString();
-            // 2-xmlText-JsonText
-            String json = XML.toJSONObject(xmlText).toString();
 
-            //3-jsonText-JsonNode
-            JsonNode node = null;
-            try {
-               node = new ObjectMapper().readTree(json);
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-
-            conn.debug("::jsonNode:: " + node.toString().replace("<","#"));
-            handleListingPage(listingPageDocument, request.getUrl(), loop, node);
+            handleListingPage(listingPageDocument, request.getUrl(), loop);
 
             request = getNextRequest(listingPageDocument, request);
             debug("Page", loop);
@@ -258,7 +241,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private Elements getOffers(final Document listingPageDocument) {
-      Elements offersElements = listingPageDocument.select(""); // TODO
+      Elements offersElements = listingPageDocument.select("products"); // TODO
       debug("Offers on this page", offersElements.size());
       return offersElements;
    }
@@ -269,17 +252,16 @@ public class TemplateStandardMotor extends SiteEnginePass {
       }
    }
 
-   private void handleListingPage(final Document listingPageDocument, final String url, final int loop,JsonNode node) throws Exception {
-//      Elements offersElements = getOffers(listingPageDocument);
-      JsonNode offersNode = node.at("/productCategorySearchPage/products");
+   private void handleListingPage(final Document listingPageDocument, final String url, final int loop) throws Exception {
+      Elements offersElements = getOffers(listingPageDocument);
+
       int validOfferIndex = 0;
       int offerIndex = 0;
-      for (JsonNode offerNode: offersNode) {
+      for (Element offerElement: offersElements) {
          offerIndex++;
          showOffer("Page :: " + loop + " - Crawl Offer :: " + offerIndex);
-         String offerUrl = offerNode.at("/url").asText();
 
-         SiteProduct siteProduct = extractOfferInformation(offerNode, url);
+         SiteProduct siteProduct = extractOfferInformation(offerElement, url);
          if (siteProduct != null) {
             if (isDuplicatedPage(siteProduct.getTitle(), siteProduct.getProductPath(), validOfferIndex)) {
                conn.error("Duplicate page found ==> Crawl stopped");
@@ -329,15 +311,16 @@ public class TemplateStandardMotor extends SiteEnginePass {
       else conn.warn("Product skipped");
    }
 
-   private SiteProduct extractOfferInformation(final JsonNode offerNode, final String url) {
+   private SiteProduct extractOfferInformation(final Element offerElement, final String url) {
       try {
          SiteProduct siteProduct = new SiteProduct();
 
-         String title = offerNode.at("/name").asText();
+         String title = getTitle(offerElement, url);
          debug("Title", title);
          siteProduct.setTitle(title);
 
-         String productPath = offerNode.at("/url").asText();
+         String productPath = getProductPath(offerElement, url);
+         productPath = "https://www.costco.com.mx/Electronicos/Videojuegos/Xbox" + productPath;
          debug("Product path", productPath);
          siteProduct.setProductPath(productPath);
 
@@ -870,13 +853,13 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private String getProductPath(final Element element, final String url) {
-      final Element pathElement = findElement(element, "[rel=canonical]");// TODO
+      final Element pathElement = findElement(element, "products url:not(:contains(.jpg))");// TODO
       String productPath = fromAbsoluteUrl(pathElement, "href");
       return validateField(productPath, url, "Product path");
    }
 
    private String getTitle(final Element element, final String url) {
-      final Element titleElement = findElement(element, ".product-name"); // TODO
+      final Element titleElement = findElement(element, "name"); // TODO
       String title = fromElementText(titleElement);
       return validateField(title, url, "Title");
    }
@@ -1130,9 +1113,9 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
    private HttpGet createHttpGet(HttpParams params, PageRequest request) {
       HttpGet httpGet = new HttpGet(request.getUrl());
-      httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+      httpGet.addHeader("Accept", "application/json, text/plain, */*");
       httpGet.addHeader("accept-encoding", "gzip, deflate, br");
-      httpGet.addHeader("Accept-Language", "es-MX,es-419;q=0.9,es;q=0.8"); // TODO
+//      httpGet.addHeader("Accept-Language", "es-MX,es-419;q=0.9,es;q=0.8"); // TODO
       httpGet.addHeader("Connection", "keep-alive");
       httpGet.addHeader("Cookie", request.getCookie());
       httpGet.addHeader("Host", getHost(request.getUrl()));
