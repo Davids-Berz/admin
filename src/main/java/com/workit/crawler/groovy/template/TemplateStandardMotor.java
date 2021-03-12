@@ -215,8 +215,8 @@ public class TemplateStandardMotor extends SiteEnginePass {
             PageResponse listingPage = connection(request, "listing page");
             checkNotNull(listingPage, "No listing page returned");
             request.withCookie(listingPage.getSetCookie());
-            Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
 
+            Document listingPageDocument = Jsoup.parse(listingPage.getContent(), request.getUrl());
 
             handleListingPage(listingPageDocument, request.getUrl(), loop);
 
@@ -853,7 +853,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
    }
 
    private String getProductPath(final Element element, final String url) {
-      final Element pathElement = findElement(element, "products url:not(:contains(.jpg))");// TODO
+      final Element pathElement = findElement(element, "url:not(:contains(.jpg))");// TODO
       String productPath = fromAbsoluteUrl(pathElement, "href");
       return validateField(productPath, url, "Product path");
    }
@@ -1113,7 +1113,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
    private HttpGet createHttpGet(HttpParams params, PageRequest request) {
       HttpGet httpGet = new HttpGet(request.getUrl());
-      httpGet.addHeader("Accept", "application/json, text/plain, */*");
+      httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
       httpGet.addHeader("accept-encoding", "gzip, deflate, br");
 //      httpGet.addHeader("Accept-Language", "es-MX,es-419;q=0.9,es;q=0.8"); // TODO
       httpGet.addHeader("Connection", "keep-alive");

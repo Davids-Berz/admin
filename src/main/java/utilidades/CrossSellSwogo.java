@@ -17,7 +17,7 @@ public class CrossSellSwogo {
 
     public static void main(String[] args) {
 
-        String target = "https://www.fnac.es/Impresora-multifuncion-HP-DeskJet-2722-Blanco-Impresora-Impresora-multifuncion-inyeccion/a7538577?oltype=1&OrderId=2&page=1&SortId=2#INOVTEL";
+        String target = "https://www.fnac.es/Impresora-multifuncion-HP-DeskJet-2722-Blanco-Impresora-Impresora-multifuncion-inyeccion/a7538577";
 
         String crossSellUrl = "https://api.swogo.net/JTdCJTIyY2xpZW50JTIyJTNBJTIyZm5hY0VzJTIyJTJDJTIyc2t1cyUyMiUzQSU1QiUyMjEtNzUzODU3NyUyMiU1RCUyQyUyMnR5cGUlMjIlM0ElMjJidW5kbGVzJTIyJTJDJTIybWF0Y2hpbmclMjIlM0ElMjJwZHAlMjIlMkMlMjJhc3Npc3RhbnQlMjIlM0ElMjJwZHAlMjIlMkMlMjJjb25maWd1cmF0aW9uJTIyJTNBJTIyJTdCJTVDJTIybG9uZ1N0eWxlJTVDJTIyJTNBdHJ1ZSU3RCUyMiU3RA==";
         String path = StringUtils.substringAfterLast(crossSellUrl, "/");
@@ -39,6 +39,10 @@ public class CrossSellSwogo {
         node = getJson(node, jsonText);
 
         System.out.println("node = " + node);
+        JsonNode accessories = node;
+        String sku = accessories.at("/hosts/0/sku").asText();
+        JsonNode crossSellOffers = accessories.at("/accessories/" + sku +"/0/accessories/1");
+        System.out.println("crossSellOffers = " + crossSellOffers);
     }
 
     private static String decodeContent(String path) {
