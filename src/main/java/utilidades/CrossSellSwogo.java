@@ -41,8 +41,11 @@ public class CrossSellSwogo {
         System.out.println("node = " + node);
         JsonNode accessories = node;
         String sku = accessories.at("/hosts/0/sku").asText();
-        JsonNode crossSellOffers = accessories.at("/accessories/" + sku +"/0/accessories/1");
-        System.out.println("crossSellOffers = " + crossSellOffers);
+        JsonNode crossSellOffers = accessories.at("/accessories/" + sku +"/0/accessories");
+        for(JsonNode reviews: crossSellOffers){
+                System.out.println("crossSellOffers = " + reviews.get(0).at(("/title")));
+        }
+
     }
 
     private static String decodeContent(String path) {

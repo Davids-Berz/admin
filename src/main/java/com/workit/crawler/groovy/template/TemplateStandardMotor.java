@@ -854,7 +854,7 @@ public class TemplateStandardMotor extends SiteEnginePass {
 
    private String getProductPath(final Element element, final String url) {
       final Element pathElement = findElement(element, "url:not(:contains(.jpg))");// TODO
-      String productPath = fromAbsoluteUrl(pathElement, "href");
+      String productPath = fromElementText(pathElement);
       return validateField(productPath, url, "Product path");
    }
 
