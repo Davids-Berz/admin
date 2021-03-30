@@ -41,7 +41,7 @@ public class LecturaYEscritura {
             System.out.println("url = " + url);
             //sku
             String sku = product.attr("ID");
-            if(sku.length() < 4) sku = SITE +" "+ sku;
+            if(sku.length() < 4) sku = SITE +"_"+ sku;
             System.out.println("sku = " + sku);
             // img
             String image = product.select("images image").text();
