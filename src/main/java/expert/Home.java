@@ -17,7 +17,8 @@ public class Home {
         final String SITE = "Expert";
         final String LISTING = "D:\\David\\tickets\\workit\\cp\\expert\\listing.html";
         final String HOME = "D:\\David\\tickets\\workit\\cp\\expert\\listing.html";
-        Path path = Paths.get(HOME);
+        final String DataInformation = "D:\\David\\tickets\\workit\\cp\\expert\\data.html";
+        Path path = Paths.get(DataInformation);
         List<String> html = null;
         try {
             html = Files.readAllLines(path);
@@ -27,15 +28,13 @@ public class Home {
 
         Document document = Jsoup.parse(html.toString());
 
-        // HOME
-        Elements category = document.select(".widget-CategoryList-subCategoryWrapper > li > a[href^=/shop]");
-        Elements category2 = document.select(".widget-CategoryList a");
-
-        // Listing breadcrumb
-        /*Elements ident = document.select("div.widget.widget-ArticleList");
-        Elements br = document.select("ul#bcp>li[itemtype*=Breadcrumb]>a:not(:contains(Unsere Produkte)), ol.widget-Breadcrumb-breadtrunc > li.widget-Breadcrumb-breadCrumb > a:not(:contains(Startseite))");*/
-
+        Elements cross = document.select("[widget-child=item_1_2] .widget-ArticlePPM-ppm-listentry");
+        Elements cs = document.select("div[data-count] div[widget-child].referenced");
 
         System.out.println();
     }
 }
+
+
+
+
