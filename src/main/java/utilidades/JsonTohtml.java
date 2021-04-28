@@ -1,9 +1,11 @@
 package utilidades;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +18,7 @@ public class JsonTohtml {
         final String SITE = "";
         //aqui agregas el path donde guardas el archivo json o txt
 
-        Path path = Paths.get("C:/Users/Wiser/Documents/ajax/ajax-json.json");
+        Path path = Paths.get("D:\\David\\tickets\\workit\\w2p\\radioPopular\\ajax");
 
         List<String> str = null;
         try {
@@ -27,7 +29,7 @@ public class JsonTohtml {
 
         // aqui creas un metodo para limpiar el codigo
 
-        String cleanStr  = cleanJson(str);
+        String cleanStr = cleanJson(str);
 
         Document document = Jsoup.parse(cleanStr, "", Parser.htmlParser());
         System.out.println();
@@ -37,11 +39,15 @@ public class JsonTohtml {
 
     }
 
-    static String cleanJson(List<String> str){
+    static String cleanJson(List<String> str) {
         //to do
-         String body = StringUtils.substringBetween(str.toString(), "\"modules\":\"","\",\"total\"");
-         body = StringUtils.replaceAll(body,"\\n", "");
-         return body.toString() ;
+        String body = StringUtils.substringBetween(str.toString(), "\"modules\":\"", "\",\"total\"");
+        body = RegExUtils.replaceAll(body, "\\t", "");
+        body = RegExUtils.replaceAll(body, "\\\\\"", "\"");
+        body = RegExUtils.replaceAll(body, "<\\\\/", "</");
+        body = RegExUtils.replaceAll(body, "\\\\n", "");
+
+        return body;
     }
 }
 
