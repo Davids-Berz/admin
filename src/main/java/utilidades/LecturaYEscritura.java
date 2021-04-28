@@ -10,27 +10,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class LecturaYEscritura {
     public static void main(String[] args) {
         final String SITE = "MundoBebes";
-        Path path = Paths.get("D:\\David\\w\\feed\\PT_MUNDOBEBES_FEED.XML");
-        StringBuilder sb = new StringBuilder();
-        Stream<String> stream = null;
+        Path path = Paths.get("D:\\David\\tickets\\workit\\cp\\expert\\expert-de.html");
+        List<String> str = null;
         try {
-            stream = Files.lines(path);
-            stream.forEach(sb::append);
+            str = Files.readAllLines(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Document doc = Jsoup.parse(sb.toString(),"", Parser.xmlParser());
+
+        Document doc = Jsoup.parse(str.toString(), "", Parser.htmlParser());
 
         Elements products = doc.select("products product");
         // total de productos
         System.out.println(products.size());
         int count = 0;
-        for (Element product : products){
+        for (Element product : products) {
             System.out.println("Producto N° " + count);
 
             // name
@@ -41,7 +40,7 @@ public class LecturaYEscritura {
             System.out.println("url = " + url);
             //sku
             String sku = product.attr("ID");
-            if(sku.length() < 4) sku = SITE +"_"+ sku;
+            if (sku.length() < 4) sku = SITE + "_" + sku;
             System.out.println("sku = " + sku);
             // img
             String image = product.select("images image").text();

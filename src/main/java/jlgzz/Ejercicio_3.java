@@ -52,7 +52,6 @@ Ejercicio_3 {
         //delivery_timeRaw = StringUtils.substringBetween(delivery_timeRaw, "Envío en: ", " Horas");
         //Integer deliveryTime = Integer.parseInt(delivery_timeRaw) / 24;
 
-
         System.out.println("title = " + title);
         System.out.println("sku = " + sku);
         System.out.println("mpn = " + mpn);
