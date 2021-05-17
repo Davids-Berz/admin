@@ -1,4 +1,4 @@
-package utilidades;
+package utils;
 
 public class Iteraciones {
 

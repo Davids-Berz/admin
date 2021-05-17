@@ -1,4 +1,4 @@
-package utilidades;
+package utils;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,12 +40,14 @@ public class JsonTohtml {
     }
 
     static String cleanJson(List<String> str) {
-        //to do
+        //limpia el html de la peticion
+        //Element pageElement = Jsoup.parse(StringEscapeUtils.unescapeJava(page.getContent()), page.getUrl());
         String body = StringUtils.substringBetween(str.toString(), "\"modules\":\"", "\",\"total\"");
         body = RegExUtils.replaceAll(body, "\\t", "");
         body = RegExUtils.replaceAll(body, "\\\\\"", "\"");
-        body = RegExUtils.replaceAll(body, "<\\\\/", "</");
+        body = RegExUtils.replaceAll(body, "\\\\/", "/");
         body = RegExUtils.replaceAll(body, "\\\\n", "");
+        body = RegExUtils.replaceAll(body, ",", "");
 
         return body;
     }
