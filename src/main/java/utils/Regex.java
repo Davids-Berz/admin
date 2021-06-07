@@ -16,6 +16,7 @@ public class Regex {
         Matcher matcherPlus = Pattern.compile(regexPlus).matcher(plus);
 
         System.out.println(matcherPlus.find());
-        System.out.println(StringUtils.replaceAll(plus,"[+]","%20"));
+        System.out.println(StringUtils.replaceAll(plus, "[+]", "%20"));
+
     }
 }
